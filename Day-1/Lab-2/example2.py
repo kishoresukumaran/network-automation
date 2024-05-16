@@ -37,17 +37,16 @@ if __name__ == '__main__':
     template = env.get_template("example2.j2")
 
     for device in DEVICE_IPS:
-        try:
-            r = requests.post('https://{}:443/command-api'.format(device), json=payload, auth=(USERNAME, PASSWORD), verify=False)
-            response = r.json()
-            pp.pprint(response)
-            serial = response['result'][0]['serialNumber']
-            hostname = response['result'][1]['hostname']
-            eos = response['result'][0]['version']
-            device_outputs[hostname] = {'serial': serial}
-            device_outputs[hostname] = {'eos': eos}
-        except requests.exceptions.RequestException as e:
-            print("Error accessing device {}: {}".format(device, e))
+        r = requests.post('https://{}:443/command-api'.format(device), json=payload, auth=(USERNAME, PASSWORD), verify=False)
+        response = r.json()
+        #pp.pprint(response)
+        serial = response['result'][0]['serialNumber']
+        hostname = response['result'][1]['hostname']
+        eos = response['result'][0]['version']
+        arch = response['result'][0]['architecture']
+        device_outputs[hostname] = {'serial': serial}
+        device_outputs[hostname]['eos'] = eos
+        device_outputs[hostname]['architecture'] = arch
     else:
         pp.pprint(device_outputs)
         print(template.render(devices=device_outputs))
