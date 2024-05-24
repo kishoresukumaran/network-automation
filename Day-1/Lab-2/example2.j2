@@ -1,0 +1,5 @@
+{{ devices | length }} contacted in total
+------------------------------------------
+{% for device in devices %}
+{{device}} with serial number {{devices[device].serial}} with architecture {{devices[device].architecture}} is running {{devices[device].eos}}
+{% endfor %}
