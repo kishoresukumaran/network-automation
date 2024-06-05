@@ -1,0 +1,10 @@
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: Gather command outputs from devices
+      # collect show verison and show ip interface brief
+      arista.eos.eos_command:
+        commands: show hostname
+      register: switch_outputs
+    - debug:
+        var: switch_outputs
